@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXERCISES WELL | Wellness & Strength Centre</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0d1117',
+                            slate: '#161b22',
+                            card: '#1f242c',
+                            border: '#2e353f',
+                            cyan: '#38bdf8',
+                            blue: '#0284c7',
+                            green: '#4ade80',
+                            accent: '#10b981'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        heading: ['"Montserrat"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth transitions */
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.25s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+        }
+        .glass-nav {
+            background: rgba(13, 17, 23, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #38bdf8 0%, #4ade80 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .border-glow {
+            box-shadow: 0 0 25px -5px rgba(56, 189, 248, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-[#0b0e14] text-slate-100 font-sans antialiased selection:bg-brand-green selection:text-black min-h-screen flex flex-col">
+
+    <!-- Encabezado de Navegación Principal -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-brand-border/60 transition-all duration-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logotipo / Marca -->
+            <button onclick="switchTab('home')" class="flex items-center gap-3 text-left group focus:outline-none">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-blue to-brand-green p-0.5 shadow-md group-hover:scale-105 transition-transform duration-200">
+                    <div class="w-full h-full bg-[#0d1117] rounded-[10px] flex items-center justify-center">
+                        <svg class="w-6 h-6 text-brand-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div>
+                    <span class="font-heading font-black tracking-wider text-xl text-white block leading-none">
+                        EXERCISES <span class="text-brand-cyan">WELL</span>
+                    </span>
+                    <span class="text-[10px] tracking-widest text-emerald-400 font-semibold uppercase block mt-1">Wellness & Strength</span>
+                </div>
+            </button>
+
+            <!-- Menú de Escritorio (5 Ventanas/Vistas) -->
+            <nav class="hidden md:flex items-center gap-1 bg-brand-slate/60 p-1.5 rounded-full border border-brand-border">
+                <button onclick="switchTab('home')" id="nav-btn-home" class="nav-btn px-4 py-2 rounded-full text-sm font-semibold text-white bg-brand-border transition-all">Inicio</button>
+                <button onclick="switchTab('areas')" id="nav-btn-areas" class="nav-btn px-4 py-2 rounded-full text-sm font-medium text-slate-400 hover:text-white transition-all">Áreas y Servicios</button>
+                <button onclick="switchTab('amigable')" id="nav-btn-amigable" class="nav-btn px-4 py-2 rounded-full text-sm font-medium text-slate-400 hover:text-white transition-all">Gym Amigable</button>
+                <button onclick="switchTab('planes')" id="nav-btn-planes" class="nav-btn px-4 py-2 rounded-full text-sm font-medium text-slate-400 hover:text-white transition-all">Membresías</button>
+                <button onclick="switchTab('app-contact')" id="nav-btn-app-contact" class="nav-btn px-4 py-2 rounded-full text-sm font-medium text-slate-400 hover:text-white transition-all">App & Contacto</button>
+            </nav>
+
+            <!-- Botón CTA Rápido Escritorio -->
+            <div class="hidden lg:flex items-center gap-3">
+                <button onclick="openTrialModal()" class="px-5 py-2.5 rounded-full text-sm font-bold bg-gradient-to-r from-sky-500 to-emerald-400 text-slate-950 hover:brightness-110 active:scale-95 transition-all shadow-md shadow-sky-500/10">
+                    Pase Gratis 1 Día
+                </button>
+            </div>
+
+            <!-- Botón Menú Móvil Hamburguesa -->
+            <button onclick="toggleMobileMenu()" id="menu-toggle-btn" class="md:hidden p-2 rounded-lg text-slate-300 hover:text-white hover:bg-brand-slate focus:outline-none" aria-label="Abrir Menú">
+                <svg id="menu-icon" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Menú Desplegable Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-[#0d1117] border-b border-brand-border px-4 py-4 space-y-2">
+            <button onclick="switchTabMobile('home')" id="mob-nav-home" class="w-full text-left px-4 py-3 rounded-xl text-sm font-bold bg-brand-slate text-brand-cyan">1. Inicio (Home)</button>
+            <button onclick="switchTabMobile('areas')" id="mob-nav-areas" class="w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-slate-300 hover:bg-brand-slate">2. Áreas & Servicios</button>
+            <button onclick="switchTabMobile('amigable')" id="mob-nav-amigable" class="w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-slate-300 hover:bg-brand-slate">3. Gym Amigable & Mentoría</button>
+            <button onclick="switchTabMobile('planes')" id="mob-nav-planes" class="w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-slate-300 hover:bg-brand-slate">4. Membresías Flexibles</button>
+            <button onclick="switchTabMobile('app-contact')" id="mob-nav-app-contact" class="w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-slate-300 hover:bg-brand-slate">5. App Exercises Well & Contacto</button>
+            <div class="pt-2">
+                <button onclick="openTrialModal(); toggleMobileMenu();" class="w-full py-3 rounded-xl text-center text-sm font-bold bg-gradient-to-r from-sky-400 to-emerald-400 text-slate-950 shadow">
+                    Solicitar Pase de Cortesía
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenedor Principal de las 5 Ventanas -->
+    <main class="flex-grow pt-20">
+
+        <!-- ========================================================
+             VENTANA 1: INICIO (HOME)
+             ======================================================== -->
+        <section id="view-home" class="tab-content active">
+            <!-- Portada Hero con la imagen oficial -->
+            <div class="relative min-h-[92vh] flex items-center justify-center overflow-hidden">
+                <!-- Imagen de Portada Principal Requerida -->
+                <div class="absolute inset-0 z-0">
+                    <img src="image_aca598.jpg" alt="EXERCISES WELL - Instalaciones de gimnasio moderno con logo oficial" class="w-full h-full object-cover object-center transform scale-105 filter brightness-95 contrast-105" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1600&auto=format&fit=crop';">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#0b0e14] via-[#0b0e14]/75 to-black/60"></div>
+                </div>
+
+                <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+                    <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-brand-slate/90 border border-brand-green/40 text-brand-green mb-6 shadow-lg backdrop-blur-md">
+                        <span class="w-2 h-2 rounded-full bg-brand-green animate-pulse"></span>
+                        Revolución en Fitness & Biofilia
+                    </span>
+
+                    <h1 class="font-heading text-4xl sm:text-6xl md:text-7xl font-black text-white tracking-tight uppercase leading-tight mb-4 drop-shadow-md">
+                        EXERCISES <span class="text-gradient">WELL</span>
+                    </h1>
+                    <p class="text-lg sm:text-2xl text-slate-200 font-light max-w-3xl mx-auto mb-8 leading-relaxed drop-shadow">
+                        El equilibrio perfecto entre <span class="text-brand-cyan font-medium">fuerza funcional</span>, <span class="text-brand-green font-medium">tecnología inteligente</span> y bienestar integral con entorno natural.
+                    </p>
+
+                    <!-- CTAs Principales -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+                        <button onclick="switchTab('planes')" class="w-full sm:w-auto px-8 py-4 rounded-full font-bold text-base bg-gradient-to-r from-sky-400 via-teal-400 to-emerald-400 text-slate-950 hover:brightness-110 shadow-lg shadow-sky-500/20 active:scale-95 transition-all">
+                            Únete Hoy Sin Contratos
+                        </button>
+                        <button onclick="switchTab('areas')" class="w-full sm:w-auto px-8 py-4 rounded-full font-bold text-base bg-brand-slate/90 hover:bg-brand-card text-white border border-brand-border/80 backdrop-blur-sm active:scale-95 transition-all">
+                            Conoce las Instalaciones
+                        </button>
+                    </div>
+
+                    <!-- Métricas / Estadísticas Rápidas -->
+                    <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                        <div class="bg-brand-slate/75 backdrop-blur-md border border-brand-border p-4 rounded-2xl text-center">
+                            <p class="font-heading text-2xl sm:text-3xl font-extrabold text-brand-cyan">+1,200</p>
+                            <p class="text-xs text-slate-300 uppercase tracking-wider mt-1">Miembros Activos</p>
+                        </div>
+                        <div class="bg-brand-slate/75 backdrop-blur-md border border-brand-border p-4 rounded-2xl text-center">
+                            <p class="font-heading text-2xl sm:text-3xl font-extrabold text-brand-green">98.4%</p>
+                            <p class="text-xs text-slate-300 uppercase tracking-wider mt-1">Satisfacción</p>
+                        </div>
+                        <div class="bg-brand-slate/75 backdrop-blur-md border border-brand-border p-4 rounded-2xl text-center">
+                            <p class="font-heading text-2xl sm:text-3xl font-extrabold text-brand-cyan">0 Días</p>
+                            <p class="text-xs text-slate-300 uppercase tracking-wider mt-1">Permanencia Forzosa</p>
+                        </div>
+                        <div class="bg-brand-slate/75 backdrop-blur-md border border-brand-border p-4 rounded-2xl text-center">
+                            <p class="font-heading text-2xl sm:text-3xl font-extrabold text-brand-green">100%</p>
+                            <p class="text-xs text-slate-300 uppercase tracking-wider mt-1">Espacio Sin Juicios</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección: Nuestra Filosofía Diferenciadora -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-sm font-bold text-brand-cyan uppercase tracking-widest">Nuestra Propuesta</h2>
+                    <p class="font-heading text-3xl sm:text-4xl font-extrabold text-white mt-2">Un centro pensado para personas reales</p>
+                    <p class="text-slate-400 mt-4 leading-relaxed">
+                        Entendemos que el mayor reto del fitness no es solo entrenar, sino la constancia, la salud mental y el tiempo. Por eso rediseñamos la experiencia completa.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Pilar 1 -->
+                    <div class="bg-brand-card/70 border border-brand-border rounded-3xl p-8 hover:border-brand-green/60 transition-all group">
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-950/70 border border-emerald-500/30 flex items-center justify-center text-brand-green mb-6 group-hover:scale-110 transition-transform">
+                            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-heading text-xl font-bold text-white mb-3">Biofilia & Aire Puro</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                            Entornos verdes con cascadas de agua real y purificación biológica de aire. Entrena en un espacio que reduce activamente el cortisol y el estrés auditivo.
+                        </p>
+                        <button onclick="switchTab('areas')" class="text-xs font-bold text-brand-green flex items-center gap-1 group-hover:gap-2 transition-all">
+                            Explorar zonas biofílicas →
+                        </button>
+                    </div>
+
+                    <!-- Pilar 2 -->
+                    <div class="bg-brand-card/70 border border-brand-border rounded-3xl p-8 hover:border-brand-cyan/60 transition-all group">
+                        <div class="w-14 h-14 rounded-2xl bg-sky-950/70 border border-sky-500/30 flex items-center justify-center text-brand-cyan mb-6 group-hover:scale-110 transition-transform">
+                            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-heading text-xl font-bold text-white mb-3">Tecnología & Eficiencia</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                            Reserva de máquinas en tiempo real, lockers que abren con código QR desde tu teléfono y música sincronizada por bluetooth directo en cada máquina.
+                        </p>
+                        <button onclick="switchTab('app-contact')" class="text-xs font-bold text-brand-cyan flex items-center gap-1 group-hover:gap-2 transition-all">
+                            Conocer la app móvil →
+                        </button>
+                    </div>
+
+                    <!-- Pilar 3 -->
+                    <div class="bg-brand-card/70 border border-brand-border rounded-3xl p-8 hover:border-emerald-400/60 transition-all group">
+                        <div class="w-14 h-14 rounded-2xl bg-teal-950/70 border border-teal-500/30 flex items-center justify-center text-teal-400 mb-6 group-hover:scale-110 transition-transform">
+                            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-heading text-xl font-bold text-white mb-3">Comunidad Inclusiva</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                            El innovador programa "Apadrina a un novato" y entrenadores de piso para consultas express de 10-15 minutos. Nadie entrena solo ni desorientado.
+                        </p>
+                        <button onclick="switchTab('amigable')" class="text-xs font-bold text-teal-400 flex items-center gap-1 group-hover:gap-2 transition-all">
+                            Ver programa amigable →
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             VENTANA 2: ÁREAS Y SERVICIOS
+             ======================================================== -->
+        <section id="view-areas" class="tab-content">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-xs font-bold text-brand-green uppercase tracking-widest bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-500/30">Nuestras Instalaciones</span>
+                    <h2 class="font-heading text-3xl sm:text-5xl font-black text-white mt-4">Espacios diseñados para tu bienestar integral</h2>
+                    <p class="text-slate-400 mt-4 leading-relaxed">
+                        Cada metro cuadrado de <strong class="text-white">EXERCISES WELL</strong> responde a una función biomecánica, ecológica o de recuperación sensorial.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Tarjeta 1: Biofilia y Relajación -->
+                    <div class="bg-brand-card rounded-3xl overflow-hidden border border-brand-border hover:border-brand-green/60 transition-all flex flex-col group">
+                        <div class="h-64 sm:h-72 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=800&auto=format&fit=crop" alt="Zona de biofilia, plantas y cascada de agua" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/800x500/161b22/4ade80?text=Zona+Biofilia';">
+                            <span class="absolute top-4 left-4 bg-black/70 backdrop-blur-md text-brand-green text-xs font-bold px-3 py-1 rounded-full border border-brand-green/30">
+                                🌿 Zona Biofílica
+                            </span>
+                        </div>
+                        <div class="p-8 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-heading text-2xl font-bold text-white mb-2">Relajación con Cascada & Oxigenación</h3>
+                                <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                                    Muros vivos con vegetación purificadora y sonido relajante de caída de agua. Incluye esterillas de estiramiento asistido, rodillos de masaje miofascial y desconexión total del ruido urbano.
+                                </p>
+                            </div>
+                            <div class="flex flex-wrap gap-2 pt-4 border-t border-brand-border/60">
+                                <span class="text-xs bg-brand-slate px-3 py-1 rounded-full text-slate-300">Cascada de agua real</span>
+                                <span class="text-xs bg-brand-slate px-3 py-1 rounded-full text-slate-300">Oxigenación natural</span>
+                                <span class="text-xs bg-brand-slate px-3 py-1 rounded-full text-slate-300">Área de estiramientos</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta 2: Fuerza y Musculación -->
+                    <div class="bg-brand-card rounded-3xl overflow-hidden border border-brand-border hover:border-brand-cyan/60 transition-all flex flex-col group">
+                        <div class="h-64 sm:h-72 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800&auto=format&fit=crop" alt="Área de musculación y fuerza" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/800x500/161b22/38bdf8?text=Fuerza+y+Pesas';">
+                            <span class="absolute top-4 left-4 bg-black/70 backdrop-blur-md text-brand-cyan text-xs font-bold px-3 py-1 rounded-full border border-brand-cyan/30">
+                                ⚡ Fuerza & Boxeo
+                            </span>
+                        </div>
+                        <div class="p-8 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-heading text-2xl font-bold text-white mb-2">Máquinas Guiadas, Pesos Libres & Box</h3>
+                                <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                                    Equipamiento de última generación con biomecánica de impacto cero en articulaciones. Espacio de sacos de boxeo de uso libre (guantes sanitizados incluidos) y sensores de postura en piso.
+                                </p>
+                            </div>
+                            <div class="flex flex-wrap gap-2 pt-4 border-t border-brand-border/60">
+                                <span class="text-xs bg-brand-slate px-3 py-1 rounded-full text-slate-300">Iluminación adaptativa</span>
+                                <span class="text-xs bg-brand-slate px-3 py-1 rounded-full text-slate-300">Boxeo sin costos extra</span>
+                                <span class="text-xs bg-brand-slate px-3 py-1 rounded-full text-slate-300">Mancuernas hasta 50kg</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta 3: Cafetería Saludable e Hidratación -->
+                    <div class="bg-brand-card rounded-3xl overflow-hidden border border-brand-border hover:border-amber-400/60 transition-all flex flex-col group">
+                        <div class="h-64 sm:h-72 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1517256064527-09c73fc73e38?q=80&w=800&auto=format&fit=crop" alt="Cafetería saludable y bebidas naturales" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/800x500/161b22/fbbf24?text=Cafeteria+Saludable';">
+                            <span class="absolute top-4 left-4 bg-black/70 backdrop-blur-md text-amber-400 text-xs font-bold px-3 py-1 rounded-full border border-amber-400/30">
+                                🍊 Nutrición Activa
+                            </span>
+                        </div>
+                        <div class="p-8 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-heading text-2xl font-bold text-white mb-2">Cafetería Funcional & Aguas Infusionadas</h3>
+                                <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                                    Dispensadores gratuitos de agua filtrada saborizada con frutas naturales y electrolitos. Barra de batidos hiperproteicos, bowls y café orgánico para antes y después del ejercicio.
+                                </p>
+                            </div>
+                            <div class="flex flex-wrap gap-2 pt-4 border-t border-brand-border/60">
+                                <span class="text-xs bg-brand-slate px-3 py-1 rounded-full text-slate-300">Agua con electrolitos gratis</span>
+                                <span class="text-xs bg-brand-slate px-3 py-1 rounded-full text-slate-300">Batidos artesanales</span>
+                                <span class="text-xs bg-brand-slate px-3 py-1 rounded-full text-slate-300">Snacks energéticos</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta 4: Sala Eco-Sostenible y UV -->
+                    <div class="bg-brand-card rounded-3xl overflow-hidden border border-brand-border hover:border-emerald-400/60 transition-all flex flex-col group">
+                        <div class="h-64 sm:h-72 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=800&auto=format&fit=crop" alt="Equipamiento sostenible y tecnología" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/800x500/161b22/34d399?text=Tecnologia+Sostenible';">
+                            <span class="absolute top-4 left-4 bg-black/70 backdrop-blur-md text-emerald-400 text-xs font-bold px-3 py-1 rounded-full border border-emerald-400/30">
+                                ☀️ Eco-Tech & Sanitización
+                            </span>
+                        </div>
+                        <div class="p-8 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-heading text-2xl font-bold text-white mb-2">Carga Solar & Desinfección UV Continua</h3>
+                                <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                                    Bicicletas generadoras que recargan tus dispositivos móviles mientras pedaleas y módulos alimentados por energía solar. Lámparas y pistolas de luz ultravioleta para sanitización automática de máquinas.
+                                </p>
+                            </div>
+                            <div class="flex flex-wrap gap-2 pt-4 border-t border-brand-border/60">
+                                <span class="text-xs bg-brand-slate px-3 py-1 rounded-full text-slate-300">Cargadores solares</span>
+                                <span class="text-xs bg-brand-slate px-3 py-1 rounded-full text-slate-300">Luz UV antibacteriana</span>
+                                <span class="text-xs bg-brand-slate px-3 py-1 rounded-full text-slate-300">Cero huella innecesaria</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             VENTANA 3: PROGRAMA GYM AMIGABLE (SOLUCIÓN PROBLEMA 2)
+             ======================================================== -->
+        <section id="view-amigable" class="tab-content">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <!-- Banner de Compromiso -->
+                <div class="bg-gradient-to-r from-brand-card via-brand-slate to-brand-card border border-brand-green/40 rounded-3xl p-8 sm:p-12 mb-16 relative overflow-hidden">
+                    <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none"></div>
+                    <div class="max-w-3xl">
+                        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-brand-green/20 text-brand-green border border-brand-green/40 mb-4">
+                            Solución a la Intimidación y Desorientación
+                        </span>
+                        <h2 class="font-heading text-3xl sm:text-5xl font-extrabold text-white leading-tight">
+                            ¿Primera vez en un gimnasio? <br>
+                            <span class="text-gradient">Aquí jamás te sentirás fuera de lugar.</span>
+                        </h2>
+                        <p class="text-slate-300 text-base sm:text-lg mt-4 leading-relaxed">
+                            El 68% de las personas abandona el gimnasio el primer mes por vergüenza, falta de guía o miedo al ridículo. En <strong>EXERCISES WELL</strong> creamos un ecosistema guiado para que alcances tus metas con confianza desde el minuto uno.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 3 Pilares del Programa Amigable -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                    <div class="bg-brand-card p-8 rounded-3xl border border-brand-border relative flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-sky-500/10 text-brand-cyan flex items-center justify-center font-bold text-xl mb-6 border border-sky-500/20">
+                                01
+                            </div>
+                            <h3 class="font-heading text-xl font-bold text-white mb-2">"Apadrina a un Novato"</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                                Te vinculamos voluntariamente con un socio experimentado de la comunidad. Tendrás un compañero que te enseña dónde están las áreas, las normas y te acompaña en tus primeros entrenos.
+                            </p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-brand-slate border border-brand-border text-xs text-brand-cyan">
+                            ✓ Ganancia mutua: Tu tutor acumula descuentos en la tienda y tú ganas confianza.
+                        </div>
+                    </div>
+
+                    <div class="bg-brand-card p-8 rounded-3xl border border-brand-border relative flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-brand-green flex items-center justify-center font-bold text-xl mb-6 border border-emerald-500/20">
+                                02
+                            </div>
+                            <h3 class="font-heading text-xl font-bold text-white mb-2">Quick Coach Desk (10-15 Min)</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                                Asesoría rápida y gratuita con profesores de planta. Sin necesidad de pagar entrenadores personales costosos: consulta posturas, cómo graduar una máquina o resolver molestias.
+                            </p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-brand-slate border border-brand-border text-xs text-brand-green">
+                            ✓ Disponible en piso en todo horario pico con respuesta al instante.
+                        </div>
+                    </div>
+
+                    <div class="bg-brand-card p-8 rounded-3xl border border-brand-border relative flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold text-xl mb-6 border border-purple-500/20">
+                                03
+                            </div>
+                            <h3 class="font-heading text-xl font-bold text-white mb-2">Máquinas con QR & Video</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                                Cada máquina tiene una placa con diagrama anatómico simple y código QR que abre un video tutorial de 15 segundos mostrando la postura correcta y la regulación del asiento.
+                            </p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-brand-slate border border-brand-border text-xs text-purple-300">
+                            ✓ Cero dudas sobre peso, seguros o ergonomía antes de empezar.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Herramienta Interactiva: Generador de Rutina Rápida -->
+                <div class="bg-brand-slate border border-brand-border rounded-3xl p-8 sm:p-12 shadow-2xl">
+                    <div class="max-w-2xl mx-auto text-center mb-8">
+                        <span class="text-xs font-bold text-brand-cyan uppercase tracking-wider">Simulador para tu Visita</span>
+                        <h3 class="font-heading text-2xl sm:text-3xl font-extrabold text-white mt-1">Generador de Rutina Exprés según tu Tiempo</h3>
+                        <p class="text-slate-400 text-sm mt-2">
+                            Selecciona tus minutos disponibles y nivel para ver cómo planificamos una sesión efectiva sin esperas.
+                        </p>
+                    </div>
+
+                    <div class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">¿Cuánto tiempo tienes?</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button type="button" onclick="setTimeChoice(15)" id="time-15" class="time-btn py-3 rounded-xl border border-brand-border text-sm font-bold bg-brand-card text-white hover:border-brand-cyan transition-all">15 min</button>
+                                <button type="button" onclick="setTimeChoice(30)" id="time-30" class="time-btn py-3 rounded-xl border border-brand-cyan text-sm font-bold bg-brand-cyan/20 text-brand-cyan transition-all">30 min</button>
+                                <button type="button" onclick="setTimeChoice(45)" id="time-45" class="time-btn py-3 rounded-xl border border-brand-border text-sm font-bold bg-brand-card text-white hover:border-brand-cyan transition-all">45 min</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Tu nivel actual</label>
+                            <select id="user-level" onchange="generateWorkoutPlan()" class="w-full py-3 px-4 rounded-xl bg-brand-card border border-brand-border text-sm text-white font-medium focus:border-brand-cyan focus:outline-none">
+                                <option value="principiante">Principiante (Acompañado / Guiado)</option>
+                                <option value="intermedio">Intermedio (Fuerza & Condición)</option>
+                                <option value="avanzado">Avanzado (Alto Rendimiento)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Resultado Dinámico -->
+                    <div id="workout-result" class="bg-brand-card border border-brand-border rounded-2xl p-6 max-w-3xl mx-auto">
+                        <!-- Contenido inyectado por JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             VENTANA 4: MEMBRESÍAS Y PLANES
+             ======================================================== -->
+        <section id="view-planes" class="tab-content">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <span class="text-xs font-bold text-brand-cyan uppercase tracking-widest bg-sky-950/60 px-3 py-1 rounded-full border border-sky-500/30">Tarifas Transparentes</span>
+                    <h2 class="font-heading text-3xl sm:text-5xl font-black text-white mt-4">Flexibilidad total. Sin cláusulas ocultas.</h2>
+                    <p class="text-slate-400 mt-4 leading-relaxed">
+                        Paga únicamente por el periodo que realmente entrenes. Cancela o pausa cuando lo necesites directamente desde tu aplicación móvil.
+                    </p>
+                </div>
+
+                <!-- Toggle de Facturación -->
+                <div class="flex items-center justify-center gap-4 mb-16">
+                    <span id="label-mensual" class="text-sm font-bold text-white">Facturación Flexible</span>
+                    <button onclick="toggleBillingPeriod()" class="w-14 h-8 bg-brand-card rounded-full p-1 border border-brand-border relative transition-colors" id="billing-toggle" aria-label="Cambiar período de cobro">
+                        <div id="toggle-circle" class="w-6 h-6 bg-brand-green rounded-full shadow-md transform transition-transform"></div>
+                    </button>
+                    <span id="label-semanal" class="text-sm font-medium text-slate-400">Pase Semanal / Por Días</span>
+                </div>
+
+                <!-- Cuadrícula de Planes -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <!-- Plan 1: Pase Diario / Ocasional -->
+                    <div class="bg-brand-card rounded-3xl p-8 border border-brand-border flex flex-col justify-between hover:border-slate-500 transition-all">
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="font-heading text-xl font-bold text-white">Pase Diario Libre</h3>
+                                <span class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full">Sin compromiso</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mb-6">Ideal para viajeros o entrenamientos de fin de semana.</p>
+                            <div class="mb-6">
+                                <span class="text-4xl font-extrabold text-white">S/ 25</span>
+                                <span class="text-slate-400 text-sm"> / día completo</span>
+                            </div>
+                            <ul class="space-y-3 text-sm text-slate-300 mb-8">
+                                <li class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                                    Acceso a todas las máquinas y pesas
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                                    Agua infusionada y electrolitos gratis
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                                    Locker inteligente con código digital
+                                </li>
+                                <li class="flex items-center gap-2 text-slate-500">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                    Sin programa tutoría "Apadrina"
+                                </li>
+                            </ul>
+                        </div>
+                        <button onclick="selectPlan('Pase Diario', 'S/ 25')" class="w-full py-3.5 rounded-2xl bg-brand-slate hover:bg-brand-border text-white font-bold text-sm transition-all">
+                            Adquirir Pase Diario
+                        </button>
+                    </div>
+
+                    <!-- Plan 2: Membresía Wellness & Strength (Destacada) -->
+                    <div class="bg-gradient-to-b from-[#18212f] to-brand-card rounded-3xl p-8 border-2 border-brand-green relative flex flex-col justify-between shadow-2xl scale-105 z-10">
+                        <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-brand-green text-slate-950 font-extrabold text-xs uppercase px-4 py-1 rounded-full shadow">
+                            Más Popular & Recomendado
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-start mb-4 mt-2">
+                                <h3 class="font-heading text-xl font-bold text-white">Wellness & Strength</h3>
+                                <span class="text-xs bg-emerald-950 text-brand-green px-2.5 py-1 rounded-full border border-emerald-500/30">Todo Incluido</span>
+                            </div>
+                            <p class="text-xs text-slate-300 mb-6">Plan integral para desarrollo físico y relajación continua.</p>
+                            <div class="mb-6">
+                                <span class="text-4xl font-extrabold text-white" id="price-standard">S/ 149</span>
+                                <span class="text-slate-400 text-sm" id="period-standard"> / mes sin permanencia</span>
+                            </div>
+                            <ul class="space-y-3 text-sm text-slate-200 mb-8">
+                                <li class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                                    Acceso ilimitado a todas las zonas
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                                    <strong>Programa 'Apadrina a un Novato'</strong>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                                    Quick Coach Desk (consultas exprés de 15 min)
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                                    App móvil con rutinas y apertura de casillero
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                                    Cascada biofílica & agua con electrolitos
+                                </li>
+                            </ul>
+                        </div>
+                        <button onclick="selectPlan('Wellness & Strength', 'S/ 149')" class="w-full py-4 rounded-2xl bg-gradient-to-r from-sky-400 to-emerald-400 hover:brightness-110 text-slate-950 font-extrabold text-sm shadow-lg shadow-emerald-500/20 active:scale-95 transition-all">
+                            Empezar este Plan
+                        </button>
+                    </div>
+
+                    <!-- Plan 3: Familiar & Kids -->
+                    <div class="bg-brand-card rounded-3xl p-8 border border-brand-border flex flex-col justify-between hover:border-brand-cyan transition-all">
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="font-heading text-xl font-bold text-white">Plan Family & Kids</h3>
+                                <span class="text-xs bg-sky-950 text-brand-cyan px-2.5 py-1 rounded-full border border-sky-500/30">Familiar (3 pers.)</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mb-6">Salud y deporte para padres e hijos en horarios dedicados.</p>
+                            <div class="mb-6">
+                                <span class="text-4xl font-extrabold text-white" id="price-family">S/ 249</span>
+                                <span class="text-slate-400 text-sm" id="period-family"> / mes familiar</span>
+                            </div>
+                            <ul class="space-y-3 text-sm text-slate-300 mb-8">
+                                <li class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-cyan" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                                    Acceso para 2 adultos + 1 menor
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-cyan" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                                    Horarios especiales infantiles supervisados
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-cyan" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                                    Descuentos en cafetería saludable (15%)
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-brand-cyan" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                                    Todas las ventajas de la app
+                                </li>
+                            </ul>
+                        </div>
+                        <button onclick="selectPlan('Plan Family & Kids', 'S/ 249')" class="w-full py-3.5 rounded-2xl bg-brand-slate hover:bg-brand-border text-white font-bold text-sm transition-all">
+                            Adquirir Plan Familiar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             VENTANA 5: APP MÓVIL Y CONTACTO
+             ======================================================== -->
+        <section id="view-app-contact" class="tab-content">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <!-- Sección Showcase de la App Móvil -->
+                <div class="bg-gradient-to-br from-brand-card to-brand-slate border border-brand-border rounded-3xl p-8 sm:p-14 mb-16 overflow-hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                        <div class="lg:col-span-7 space-y-6">
+                            <span class="text-xs font-bold text-brand-cyan uppercase tracking-widest bg-sky-950/70 px-3.5 py-1.5 rounded-full border border-sky-500/30">
+                                Ecosistema Tecnológico
+                            </span>
+                            <h2 class="font-heading text-3xl sm:text-5xl font-black text-white leading-tight">
+                                Tu gimnasio inteligente en la palma de tu mano
+                            </h2>
+                            <p class="text-slate-300 text-base leading-relaxed">
+                                Diseñamos la aplicación oficial de <strong>EXERCISES WELL</strong> para optimizar tu tiempo. No hagas filas ni adivines cuándo está despejado tu equipo favorito.
+                            </p>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                                <div class="flex items-start gap-3 p-3.5 rounded-2xl bg-brand-dark/50 border border-brand-border">
+                                    <div class="text-brand-cyan mt-1">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-bold text-white">Mapa de Afluencia en Vivo</h4>
+                                        <p class="text-xs text-slate-400">Revisa la disponibilidad de caminadoras y pesas antes de salir de casa.</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-3 p-3.5 rounded-2xl bg-brand-dark/50 border border-brand-border">
+                                    <div class="text-brand-green mt-1">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-bold text-white">Lockers Inteligentes QR</h4>
+                                        <p class="text-xs text-slate-400">Sin llaves ni candados físicos. Abre y cierra con tu código de seguridad.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mockup Visual del Smartphone -->
+                        <div class="lg:col-span-5 flex justify-center">
+                            <div class="w-64 sm:w-72 bg-black border-4 border-slate-700 rounded-[40px] p-3 shadow-2xl relative">
+                                <div class="w-28 h-4 bg-slate-800 rounded-full mx-auto mb-3"></div>
+                                <div class="bg-brand-dark rounded-[30px] p-4 text-xs space-y-4 border border-brand-border">
+                                    <div class="flex justify-between items-center pb-2 border-b border-brand-border">
+                                        <span class="font-bold text-brand-cyan">GymTime App</span>
+                                        <span class="text-[10px] text-brand-green font-semibold">● En Sala (28%)</span>
+                                    </div>
+                                    <div class="p-3 bg-brand-slate rounded-xl">
+                                        <p class="text-[11px] font-bold text-white mb-1">Tu Rutina de Hoy: 30 Min</p>
+                                        <p class="text-[10px] text-slate-400">Nivel Principiante • Tren Superior</p>
+                                        <div class="w-full bg-slate-700 h-1.5 rounded-full mt-2">
+                                            <div class="bg-brand-green h-1.5 rounded-full w-2/3"></div>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2 text-center text-[10px]">
+                                        <div class="p-2 bg-brand-card rounded-lg border border-brand-border">
+                                            <p class="text-slate-400">Lockers</p>
+                                            <p class="font-bold text-white">#42 Asignado</p>
+                                        </div>
+                                        <div class="p-2 bg-brand-card rounded-lg border border-brand-border">
+                                            <p class="text-slate-400">Música Máquina</p>
+                                            <p class="font-bold text-brand-cyan">Sincronizado</p>
+                                        </div>
+                                    </div>
+                                    <button class="w-full py-2 bg-gradient-to-r from-sky-400 to-emerald-400 text-slate-950 font-bold rounded-lg text-center text-[11px]">
+                                        Escanear Máquina QR
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de Contacto & Pase de 1 Día -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                    <div class="lg:col-span-5 space-y-6">
+                        <span class="text-xs font-bold text-brand-green uppercase tracking-wider">Atención Directa</span>
+                        <h3 class="font-heading text-3xl font-extrabold text-white">Visítanos y prueba un día sin costo</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Ven a conocer nuestras cascadas de biofilia, las máquinas con asistencia inteligente y prueba la asesoría de 15 minutos en el <strong>Quick Coach Desk</strong>.
+                        </p>
+
+                        <div class="space-y-4 pt-2">
+                            <div class="flex items-center gap-4 text-slate-300 text-sm">
+                                <div class="w-10 h-10 rounded-xl bg-brand-card flex items-center justify-center text-brand-cyan border border-brand-border">
+                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-white">Ubicación Central</p>
+                                    <p class="text-xs text-slate-400">Av. Javier Prado Este 3200, San Borja, Lima</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-4 text-slate-300 text-sm">
+                                <div class="w-10 h-10 rounded-xl bg-brand-card flex items-center justify-center text-brand-green border border-brand-border">
+                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-white">Horarios de Entrenamiento</p>
+                                    <p class="text-xs text-slate-400">Lunes a Viernes: 5:30 am - 11:00 pm | Sáb y Dom: 7:00 am - 8:00 pm</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-4 text-slate-300 text-sm">
+                                <div class="w-10 h-10 rounded-xl bg-brand-card flex items-center justify-center text-brand-cyan border border-brand-border">
+                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-white">WhatsApp & Teléfono</p>
+                                    <p class="text-xs text-slate-400">+51 (01) 987 654 321</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formulario Interactivo -->
+                    <div class="lg:col-span-7 bg-brand-card p-8 sm:p-10 rounded-3xl border border-brand-border">
+                        <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-4">
+                            <h4 class="font-heading text-xl font-bold text-white mb-2">Solicita tu Pase Gratuito de 1 Día</h4>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1">Nombre Completo *</label>
+                                    <input type="text" id="contact-name" required placeholder="Ej. Carlos Mendoza" class="w-full px-4 py-3 rounded-xl bg-brand-slate border border-brand-border text-sm text-white placeholder-slate-500 focus:border-brand-green focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1">Correo Electrónico *</label>
+                                    <input type="email" id="contact-email" required placeholder="carlos@correo.com" class="w-full px-4 py-3 rounded-xl bg-brand-slate border border-brand-border text-sm text-white placeholder-slate-500 focus:border-brand-green focus:outline-none">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1">Teléfono / WhatsApp *</label>
+                                    <input type="tel" id="contact-phone" required placeholder="+51 987..." class="w-full px-4 py-3 rounded-xl bg-brand-slate border border-brand-border text-sm text-white placeholder-slate-500 focus:border-brand-green focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1">¿Deseas activar un Mentor?</label>
+                                    <select id="contact-mentor" class="w-full px-4 py-3 rounded-xl bg-brand-slate border border-brand-border text-sm text-white focus:border-brand-green focus:outline-none">
+                                        <option value="si">Sí, quiero el programa 'Apadrina a un novato'</option>
+                                        <option value="no">No por ahora, exploraré solo</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Mensaje o duda específica</label>
+                                <textarea id="contact-msg" rows="3" placeholder="Coméntanos tus objetivos (ej. pérdida de peso, tonificación, rehabilitación)..." class="w-full px-4 py-3 rounded-xl bg-brand-slate border border-brand-border text-sm text-white placeholder-slate-500 focus:border-brand-green focus:outline-none"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full py-4 rounded-xl font-extrabold text-sm bg-gradient-to-r from-sky-400 to-emerald-400 text-slate-950 hover:brightness-110 active:scale-95 transition-all shadow-md">
+                                Confirmar y Generar Mi Pase Digital
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Interactivo: Confirmación de Pase / Notificación -->
+    <div id="trial-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-brand-card border border-brand-green max-w-md w-full rounded-3xl p-6 sm:p-8 text-center relative shadow-2xl">
+            <div class="w-16 h-16 rounded-full bg-emerald-950 border border-brand-green flex items-center justify-center mx-auto mb-4 text-brand-green">
+                <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <h3 class="font-heading text-2xl font-bold text-white mb-2" id="modal-title">¡Pase Confirmado!</h3>
+            <p class="text-slate-300 text-sm leading-relaxed mb-6" id="modal-desc">
+                Te enviamos un pase de acceso digital con código QR para que disfrutes de un día completo en <strong class="text-brand-cyan">EXERCISES WELL</strong> con todas las áreas incluidas.
+            </p>
+            <div class="p-3 bg-brand-slate rounded-xl text-xs text-brand-green font-mono mb-6 border border-brand-border">
+                CÓDIGO DE ACCESO: <span class="font-bold text-white">WELL-FREE-2026</span>
+            </div>
+            <button onclick="closeTrialModal()" class="w-full py-3 rounded-xl bg-brand-green text-slate-950 font-bold text-sm hover:brightness-110 transition-all">
+                Entendido, ¡gracias!
+            </button>
+        </div>
+    </div>
+
+    <!-- Pie de Página Profesional -->
+    <footer class="bg-[#090c10] border-t border-brand-border py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-brand-border/60">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-blue to-brand-green flex items-center justify-center text-slate-950 font-black text-sm">
+                        EW
+                    </div>
+                    <div>
+                        <span class="font-heading font-black tracking-wider text-base text-white">
+                            EXERCISES <span class="text-brand-cyan">WELL</span>
+                        </span>
+                        <p class="text-xs text-slate-400">Wellness & Strength Centre</p>
+                    </div>
+                </div>
+
+                <!-- Enlaces rápidos del footer -->
+                <div class="flex flex-wrap justify-center gap-6 text-xs text-slate-400">
+                    <button onclick="switchTab('home')" class="hover:text-brand-cyan transition-colors">Inicio</button>
+                    <button onclick="switchTab('areas')" class="hover:text-brand-cyan transition-colors">Áreas Biofílicas</button>
+                    <button onclick="switchTab('amigable')" class="hover:text-brand-cyan transition-colors">Gym Amigable</button>
+                    <button onclick="switchTab('planes')" class="hover:text-brand-cyan transition-colors">Membresías Flexibles</button>
+                    <button onclick="switchTab('app-contact')" class="hover:text-brand-cyan transition-colors">App Móvil</button>
+                </div>
+            </div>
+
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+                <p>© 2026 EXERCISES WELL. Todos los derechos reservados. Desarrollado para salud, tecnología y bienestar.</p>
+                <div class="flex gap-4">
+                    <span class="hover:text-white cursor-pointer">Términos de Servicio</span>
+                    <span class="hover:text-white cursor-pointer">Política de Privacidad</span>
+                    <span class="hover:text-white cursor-pointer">Libro de Reclamaciones</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lógica JavaScript de la SPA y Componentes Interactivos -->
+    <script>
+        // Variables de estado
+        let activeTab = 'home';
+        let isWeekly = false;
+        let selectedMinutes = 30;
+
+        // Base de datos de rutinas según tiempo y nivel
+        const workoutDatabase = {
+            15: {
+                principiante: {
+                    title: "Sesión Exprés Guiada de Activación (15 Min)",
+                    detail: "• 3 min: Caminata en pendiente con vista a la cascada biofílica.\n• 8 min: Circuito asistido en máquinas guiadas (pecho y piernas con QR).\n• 4 min: Estiramiento guiado con rodillo miofascial."
+                },
+                intermedio: {
+                    title: "HIIT Metabólico Funcional (15 Min)",
+                    detail: "• 2 min: Movilidad articular activa.\n• 10 min: Tábata en bicicleta generadora solar y golpes al saco de boxeo.\n• 3 min: Recuperación de pulso e hidratación con electrolitos."
+                },
+                avanzado: {
+                    title: "Potencia & Densidad Rápida (15 Min)",
+                    detail: "• 2 min: Activación escapular y cadera.\n• 11 min: Superserie de dominadas con lastre y sentadilla búlgara sin descanso.\n• 2 min: Descompresión de columna."
+                }
+            },
+            30: {
+                principiante: {
+                    title: "Rutina Fundamental 'Cero Miedo' (30 Min)",
+                    detail: "• 5 min: Calentamiento en caminadora con música ambiental personalizada.\n• 15 min: 4 máquinas guiadas con apoyo inicial de 10 min por el Quick Coach Desk.\n• 10 min: Hidratación con agua natural de fruta y estiramiento en la zona zen."
+                },
+                intermedio: {
+                    title: "Fuerza e Hipertrofia Moderada (30 Min)",
+                    detail: "• 5 min: Activación cardiovascular.\n• 20 min: Empuje / Tracción con pesas libres y máquinas guiadas ergonómicas.\n• 5 min: Desinfección UV del equipamiento y estiramientos pasivos."
+                },
+                avanzado: {
+                    title: "Desarrollo de Fuerza Funcional (30 Min)",
+                    detail: "• 5 min: Movilidad dinámica con bandas.\n• 20 min: Series pesadas en banco plano y peso muerto con piso inteligente de impacto.\n• 5 min: Protocolo de enfriamiento muscular."
+                }
+            },
+            45: {
+                principiante: {
+                    title: "Experiencia Completa Wellness & Strength (45 Min)",
+                    detail: "• 8 min: Cardio ligero en zona iluminada según el ritmo.\n• 22 min: Recorrido integral de tren superior e inferior con asistencia del programa 'Apadrina a un Novato'.\n• 15 min: Sesión de relajación junto a la cascada de agua interior y batido en la cafetería."
+                },
+                intermedio: {
+                    title: "Potencia Total y Resistencia (45 Min)",
+                    detail: "• 8 min: Entrada en calor dinámica.\n• 25 min: Rutina dividida (tren inferior o superior) con sobrecarga progresiva.\n• 12 min: 3 rounds de boxeo libre y vuelta a la calma con electrolitos."
+                },
+                avanzado: {
+                    title: "Entrenamiento de Rendimiento Completo (45 Min)",
+                    detail: "• 10 min: Preparación articular y activación neuromuscular.\n• 28 min: Trabajo de fuerza pura con pesos libres y máquinas biomecánicas.\n• 7 min: Terapia de recuperación activa en zona biofílica oxigenada."
+                }
+            }
+        };
+
+        // Función para cambiar de Ventana/Tab
+        function switchTab(tabId) {
+            activeTab = tabId;
+
+            // Ocultar todas las vistas
+            const views = document.querySelectorAll('.tab-content');
+            views.forEach(view => {
+                view.classList.remove('active');
+            });
+
+            // Mostrar vista seleccionada
+            const targetView = document.getElementById('view-' + tabId);
+            if (targetView) {
+                targetView.classList.add('active');
+            }
+
+            // Actualizar estilo en botones de navegación escritorio
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => {
+                btn.className = "nav-btn px-4 py-2 rounded-full text-sm font-medium text-slate-400 hover:text-white transition-all";
+            });
+
+            const currentBtn = document.getElementById('nav-btn-' + tabId);
+            if (currentBtn) {
+                currentBtn.className = "nav-btn px-4 py-2 rounded-full text-sm font-semibold text-white bg-brand-border transition-all";
+            }
+
+            // Scroll suave hacia la parte superior
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Si entra a 'amigable', actualizar la rutina calculada
+            if (tabId === 'amigable') {
+                generateWorkoutPlan();
+            }
+        }
+
+        // Navegación en móvil
+        function switchTabMobile(tabId) {
+            switchTab(tabId);
+            toggleMobileMenu();
+        }
+
+        // Toggle del Menú Móvil
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Selección de tiempo en el generador de rutinas
+        function setTimeChoice(minutes) {
+            selectedMinutes = minutes;
+            document.querySelectorAll('.time-btn').forEach(btn => {
+                btn.className = "time-btn py-3 rounded-xl border border-brand-border text-sm font-bold bg-brand-card text-white hover:border-brand-cyan transition-all";
+            });
+
+            const activeBtn = document.getElementById('time-' + minutes);
+            if (activeBtn) {
+                activeBtn.className = "time-btn py-3 rounded-xl border border-brand-cyan text-sm font-bold bg-brand-cyan/20 text-brand-cyan transition-all";
+            }
+
+            generateWorkoutPlan();
+        }
+
+        // Generar plan de rutina reactivo
+        function generateWorkoutPlan() {
+            const levelSelect = document.getElementById('user-level');
+            const level = levelSelect ? levelSelect.value : 'principiante';
+            const plan = workoutDatabase[selectedMinutes][level];
+
+            const container = document.getElementById('workout-result');
+            if (container && plan) {
+                const formattedDetail = plan.detail.replace(/\n/g, '<br>');
+                container.innerHTML = `
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-brand-green uppercase tracking-wider">Plan Recomendado</span>
+                        <span class="text-xs bg-brand-slate text-brand-cyan px-2.5 py-1 rounded-full font-mono">${selectedMinutes} MINUTOS</span>
+                    </div>
+                    <h4 class="font-heading text-lg font-bold text-white mb-2">${plan.title}</h4>
+                    <p class="text-slate-300 text-sm leading-relaxed mb-4">${formattedDetail}</p>
+                    <div class="flex flex-wrap items-center gap-3 pt-3 border-t border-brand-border text-xs text-slate-400">
+                        <span>💡 Asistencia de Coach: Disponible</span>
+                        <span>• QR en Máquinas: Activado</span>
+                        <span>• Estaciones de Hidratación: Incluidas</span>
+                    </div>
+                `;
+            }
+        }
+
+        // Toggle de Período de Facturación (Semanal vs Mensual)
+        function toggleBillingPeriod() {
+            isWeekly = !isWeekly;
+            const toggleCircle = document.getElementById('toggle-circle');
+            const priceStandard = document.getElementById('price-standard');
+            const periodStandard = document.getElementById('period-standard');
+            const priceFamily = document.getElementById('price-family');
+            const periodFamily = document.getElementById('period-family');
+
+            if (isWeekly) {
+                toggleCircle.style.transform = 'translateX(24px)';
+                priceStandard.textContent = 'S/ 45';
+                periodStandard.textContent = ' / semana (sin compromiso)';
+                priceFamily.textContent = 'S/ 79';
+                periodFamily.textContent = ' / semana familiar';
+            } else {
+                toggleCircle.style.transform = 'translateX(0px)';
+                priceStandard.textContent = 'S/ 149';
+                periodStandard.textContent = ' / mes sin permanencia';
+                priceFamily.textContent = 'S/ 249';
+                periodFamily.textContent = ' / mes familiar';
+            }
+        }
+
+        // Selección de Plan -> Redirige al formulario con detalle
+        function selectPlan(planName, price) {
+            switchTab('app-contact');
+            const msgInput = document.getElementById('contact-msg');
+            if (msgInput) {
+                msgInput.value = `Hola, estoy interesado en adquirir el plan: ${planName} (${price}). Por favor contáctenme para coordinar mi inscripción.`;
+                msgInput.focus();
+            }
+        }
+
+        // Manejo del formulario de contacto
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            const modalTitle = document.getElementById('modal-title');
+            const modalDesc = document.getElementById('modal-desc');
+
+            modalTitle.textContent = `¡Bienvenido, ${name}!`;
+            modalDesc.textContent = `Tu pase de cortesía de 1 día y tu acceso al Quick Coach Desk han sido registrados exitosamente. Te esperamos en EXERCISES WELL.`;
+
+            document.getElementById('contact-form').reset();
+            openTrialModal();
+        }
+
+        // Funciones del Modal de Cortesía
+        function openTrialModal() {
+            const modal = document.getElementById('trial-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeTrialModal() {
+            const modal = document.getElementById('trial-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Inicialización al cargar la ventana
+        window.addEventListener('DOMContentLoaded', () => {
+            generateWorkoutPlan();
+        });
+    </script>
+</body>
+</html>
